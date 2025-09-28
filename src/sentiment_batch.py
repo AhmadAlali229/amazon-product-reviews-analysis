@@ -13,8 +13,8 @@ df["sentiment_label"] = df["review_content"].fillna("").astype(str).apply(lambda
 df["sentiment_score"] = df["review_content"].fillna("").astype(str).apply(lambda x: sentiment(x[:512])[0]["score"])
 
 # Save to SQLite
-conn = sqlite3.connect("employees.db")
-df.to_sql("employees", conn, if_exists="replace", index=False)
+conn = sqlite3.connect("AmazonData.db")
+df.to_sql("AmazonData", conn, if_exists="replace", index=False)
 conn.close()
 
-print("✅ Done! Database updated with sentiment columns.")
+print(" Done! Database updated with sentiment columns.")
