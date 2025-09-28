@@ -62,14 +62,15 @@ st.markdown("""
 with tab_overview:
 
   # Creating table to show AmazonData details
-   df_view = load_AmazonData()   # call the function to get the DataFrame
+    df_view = load_AmazonData()   # call the function to get the DataFrame
 
-st.subheader(f"AmazonData Details ({len(df_view)})")
-st.dataframe(df_view, use_container_width=True)
+    st.subheader(f"AmazonData Details ({len(df_view)})")
+    st.dataframe(df_view, use_container_width=True)
 
 
 #Using add chatbot Tab
-##with tab_chatbot:
-    # crearing roles maps for selection based on department
-   ## job_roles_map =
+with tab_chatbot:
+    # 
+    xChat= st.chat_input(placeholder="Your message")
+    ##st.chat_message(xChat)
 
