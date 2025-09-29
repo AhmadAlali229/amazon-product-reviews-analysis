@@ -16,17 +16,17 @@ if not GROQ_API_KEY:
 
 client = Groq(api_key=GROQ_API_KEY)
 
-## Connecting with database
-conn = sqlite3.connect("..\data\AmazonData.db")
+## Connect to database
+conn = sqlite3.connect("../data/AmazonData.db")
 
-## Loading Database
+## Load data from AmazonData table
 def load_AmazonData():
     return pd.read_sql_query("SELECT * FROM AmazonData;", conn)
 
 df = load_AmazonData()
 
-#Add logo 
-LOGO = Image.open('..\Images\Picture1.png')
+## Add logo
+LOGO = Image.open('../Images/Picture1.png')
 left, mid, right = st.columns([1,3,1])
 st.image(LOGO, width=180)
 
@@ -38,10 +38,10 @@ st.markdown("An interactive dashboard where you can analyze Dashboard and ChatBo
 ## Tabs
 tab_overview, tab_chatbot = st.tabs(["Overview", "Chatbot"])
 
-# --- Theme ---
+## Theme settings
 PURPLE = "#4B2E83"
-BOT_BG = "#222831"   # dark gray background for bot answers
-BOT_TEXT = "#FFFFFF" # white text
+BOT_BG = "#222831"   # background for bot answers
+BOT_TEXT = "#FFFFFF" # bot text color
 
 st.markdown(f"""
 <style>
@@ -55,7 +55,7 @@ button[kind="primary"], button[data-baseweb="button"] {{
   background: {PURPLE};
   color: #FFFFFF;
 }}
-/* Assistant message styling */
+/* Assistant message box */
 .assistant-box {{
   background-color: {BOT_BG};
   color: {BOT_TEXT};
@@ -69,7 +69,7 @@ button[kind="primary"], button[data-baseweb="button"] {{
 </style>
 """, unsafe_allow_html=True)
 
-# Style for tabs
+## Tab styles
 st.markdown("""
     <style>
     button[data-baseweb="tab"] > div[data-testid="stMarkdownContainer"] p {
@@ -82,16 +82,15 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ------------------- Overview Tab -------------------
+# ---------------- Overview Tab ----------------
 with tab_overview:
-    ## Show table from DB
     df_view = load_AmazonData()
     st.subheader(f"AmazonData Details ({len(df_view)})")
     st.dataframe(df_view, use_container_width=True)
 
-# ------------------- Chatbot Tab -------------------
+# ---------------- Chatbot Tab ----------------
 with tab_chatbot:
-    st.subheader("💬 Chatbot with Database + AI")
+    st.subheader("💬 Chatbot For Analysis")
 
     ## Get user input
     user_message = st.chat_input("Ask about Amazon products or DB structure...")
@@ -104,21 +103,69 @@ with tab_chatbot:
         conn = sqlite3.connect("../data/AmazonData.db")
         cursor = conn.cursor()
 
-        ## CASE 1: If user asks about tables
+        # --- CASE 1: Ask about tables ---
         if "tables" in user_message.lower():
             cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
             tables = [t[0] for t in cursor.fetchall()]
             conn.close()
             st.markdown(f"<div class='assistant-box'>📂 Tables in DB: {tables}</div>", unsafe_allow_html=True)
 
-        ## CASE 2: If user asks about columns
+        # --- CASE 2: Ask about columns ---
         elif "columns" in user_message.lower():
             cursor.execute("PRAGMA table_info(AmazonData);")
             columns = [c[1] for c in cursor.fetchall()]
             conn.close()
             st.markdown(f"<div class='assistant-box'>📑 Columns in AmazonData: {columns}</div>", unsafe_allow_html=True)
 
-        ## CASE 3: General questions (RAG style)
+        # --- CASE 3: Highest discounted_price ---
+        elif "highest discounted_price" in user_message.lower() or "top" in user_message.lower():
+            query = """
+            SELECT product_name, discounted_price
+            FROM AmazonData
+            ORDER BY discounted_price DESC
+            LIMIT 5;
+            """
+            df = pd.read_sql(query, conn)
+            conn.close()
+            if df.empty:
+                st.markdown("<div class='assistant-box'>⚠️ No data found.</div>", unsafe_allow_html=True)
+            else:
+                st.subheader("📊 Top 5 Products (Highest Discounted Price)")
+                st.dataframe(df, use_container_width=True)
+
+        # --- CASE 4: Lowest discounted_price ---
+        elif "lowest discounted_price" in user_message.lower() or "cheapest" in user_message.lower():
+            query = """
+            SELECT product_name, discounted_price
+            FROM AmazonData
+            ORDER BY discounted_price ASC
+            LIMIT 5;
+            """
+            df = pd.read_sql(query, conn)
+            conn.close()
+            if df.empty:
+                st.markdown("<div class='assistant-box'>⚠️ No data found.</div>", unsafe_allow_html=True)
+            else:
+                st.subheader("📉 Lowest 5 Products (Discounted Price)")
+                st.dataframe(df, use_container_width=True)
+
+        # --- CASE 5: Average rating per category ---
+        elif "average rating" in user_message.lower():
+            query = """
+            SELECT category, ROUND(AVG(rating),2) AS avg_rating
+            FROM AmazonData
+            GROUP BY category
+            ORDER BY avg_rating DESC;
+            """
+            df = pd.read_sql(query, conn)
+            conn.close()
+            if df.empty:
+                st.markdown("<div class='assistant-box'>⚠️ No data found.</div>", unsafe_allow_html=True)
+            else:
+                st.subheader("⭐ Average Rating per Category")
+                st.dataframe(df, use_container_width=True)
+
+        # --- CASE 6: General Questions (RAG style with Groq) ---
         else:
             query = f"""
             SELECT product_name, category, discounted_price, rating, review_content
@@ -130,13 +177,11 @@ with tab_chatbot:
             df = pd.read_sql(query, conn)
             conn.close()
 
-            ## If no results
             if df.empty:
                 db_context = "No matching data found in the database."
             else:
                 db_context = df.to_string(index=False)
 
-            ## Send context + question to Groq
             completion = client.chat.completions.create(
                 model="groq/compound",
                 messages=[
@@ -149,6 +194,5 @@ with tab_chatbot:
                 stream=False,
             )
 
-            ## Show assistant response with styled background
             assistant_response = completion.choices[0].message.content
             st.markdown(f"<div class='assistant-box'>{assistant_response}</div>", unsafe_allow_html=True)
