@@ -72,5 +72,5 @@ with tab_overview:
 with tab_chatbot:
     # 
     xChat= st.chat_input(placeholder="Your message")
-    ##st.chat_message(xChat)
+    ##st.chat_message(xChat) this is for chat
 
