@@ -1,9 +1,9 @@
-📊 Amazon Analytics Dashboard
+## 📊 Amazon Analytics Dashboard
 
 An interactive analytics dashboard built with Streamlit, SQLite, and Groq AI.
 This project lets you analyze Amazon product reviews, visualize insights, and chat with an AI assistant that uses your database (RAG-style).
 
-📂 Project Structure
+## 📂 Project Structure
 data/                             
  └── amazon_product_reviews.xlsx     # Original dataset            
  └── AmazonData.db                   # SQLite database                
@@ -22,15 +22,15 @@ Conn.ipynb                            # Connection / API test notebook
 README.md                             # Project documentation
 .env                                  # Environment variables (API keys, etc.)                   
 
-🚀 Features
+## 🚀 Features
 
-✔️ Dashboard Overview
+#### ✔️ Dashboard Overview
 
 Show products, categories, ratings, and sentiment results.
 
 Clean purple-themed UI with styled headers.
 
-✔️ RAG Chatbot (Groq + DB)
+#### ✔️ RAG Chatbot (Groq + DB)
 
 Ask natural language questions about products, categories, or reviews.
 
@@ -42,15 +42,15 @@ Special queries like:
 
 "What columns does AmazonData have?"
 
-✔️ Sentiment Analysis
+#### ✔️ Sentiment Analysis
 
 Preprocessed reviews labeled with sentiment_label and sentiment_score.
 
-✔️ Feature Engineering
+#### ✔️ Feature Engineering
 
 Added savings column (difference between actual and discounted price).
 
-⚙️ Installation
+## ⚙️ Installation
 
 Clone this repository:
 
@@ -69,14 +69,14 @@ Set your Groq API key inside .env:
 
 GROQ_API_KEY=your_key_here
 
-▶️ Usage
+## ▶️ Usage
 
 Run the Streamlit app:
 
 cd src
 streamlit run ChatBot.py
 
-🛠️ Tech Stack
+## 🛠️ Tech Stack
 
 Python (Pandas, SQLite, Streamlit, Plotly)
 
@@ -84,7 +84,7 @@ Groq AI (Compound model for chatbot)
 
 SQL (Data queries, RAG integration)
 
-📷 Screenshots
+## 📷 Screenshots
 🔹 Dashboard & Chatbot – Average Rating per Category ![Average Rating per Category](Images/pic2.png)
 
 🔹 Chatbot Answer – Top 5 Products (Highest Discounted Price)![Top 5 Products](Images/pic1.png)
@@ -93,7 +93,7 @@ SQL (Data queries, RAG integration)
 
 🔹 Highest Discounted Price![Highest Discounted Price](Images/pic3.png)
 
-📜 License
+## 📜 License
 
 This project is licensed under the MIT License – see the LICENSE
  file for details.
