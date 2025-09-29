@@ -1,86 +1,99 @@
-📊 Amazon Product Reviews Analysis
+📊 Amazon Analytics Dashboard
 
-This project focuses on analyzing Amazon product reviews using Excel, Python (Pandas), SQLite, and AI-powered sentiment analysis with Hugging Face.
-It represents a practical workflow for data cleaning, feature engineering, and storage in a database, forming the foundation for deeper analysis and chatbot integration.
+An interactive analytics dashboard built with Streamlit, SQLite, and Groq AI.
+This project lets you analyze Amazon product reviews, visualize insights, and chat with an AI assistant that uses your database (RAG-style).
 
 📂 Project Structure
-WEEK3_PROJECT/             
-│── src/                 
-│   ├── Sentiment_Analysis.py        # Test script for single-sentence sentiment analysis                   
-│   ├── sentiment_batch.py           # Batch pipeline: adds sentiment columns to dataset and DB                    
-│   └── amazon_product_reviews.xlsx  # Cleaned dataset (Excel source file)            
-│                        
-│── AmazonData.db                    # SQLite database with full dataset + engineered features                                 
-│── Conn.ipynb                       # Notebook for database connection and SQL queries                     
+data/                             
+ └── amazon_product_reviews.xlsx     # Original dataset            
+ └── AmazonData.db                   # SQLite database                
 
-🧹 Data Cleaning & Filtering (Excel)
+Images/          
+ └── Picture1.png                    # Logo
 
-Before moving to Python, the dataset was carefully cleaned in Excel to ensure consistent and reliable analysis:
+src/             
+ ├── ChatBot.py                      # Streamlit app with Chatbot + Dashboard                     
+ ├── add_savings_column.py           # Script to add savings column into DB                       
+ ├── sentiment_batch.py              # Batch script for sentiment analysis                            
+ ├── GeneralAnalysis.ipynb           # Notebook for exploration                        
+ └── AmazonData.db                   # Another DB copy for testing             
 
-Price Columns (discounted_price, actual_price)
+Conn.ipynb                            # Connection / API test notebook                       
+README.md                             # Project documentation
+.env                                  # Environment variables (API keys, etc.)                   
 
-Removed currency symbols ($, SAR, ₹).
+🚀 Features
 
-Removed thousand separators (, and Indian-style separators like 1,79,691).
+✔️ Dashboard Overview
 
+Show products, categories, ratings, and sentiment results.
 
-Removed % symbols.
+Clean purple-themed UI with styled headers.
 
+✔️ RAG Chatbot (Groq + DB)
 
-Cleaned rating_count by removing commas and storing as integers.
+Ask natural language questions about products, categories, or reviews.
 
+AI answers by looking up your AmazonData.db.
 
-This Excel step gave a clean, analysis-ready dataset that could be safely imported into Python and SQLite.
+Special queries like:
 
-⚙️ Features & Workflow
-1. Data Import & Database Integration
+"What tables are in my database?"
 
-Used Pandas to load the cleaned Excel file.
+"What columns does AmazonData have?"
 
-Stored the dataset into SQLite (AmazonData.db)
+✔️ Sentiment Analysis
 
-Enabled running SQL queries directly from Python or Jupyter Notebook.
+Preprocessed reviews labeled with sentiment_label and sentiment_score.
 
-2. Feature Engineering
+✔️ Feature Engineering
 
-Sentiment Analysis applied on review_content using the Hugging Face multilingual sentiment model.
+Added savings column (difference between actual and discounted price).
 
-Added two new columns to the dataset and DB :
+⚙️ Installation
 
-sentiment_label → Positive / Neutral / Negative
+Clone this repository:
 
-sentiment_score → Confidence score (0–1)
-
-3. Scripts
-
-Sentiment_Analysis.py: Quick test of the Hugging Face model on single sentences.
-
-sentiment_batch.py: Full batch pipeline that processes every review in Excel, appends sentiment columns, and updates the SQLite DB.
-
-🚀 Tech Stack
-
-Python: Pandas, SQLite, Transformers (Hugging Face)
-
-Excel: Initial cleaning & filtering
-
-SQLite: Database storage (AmazonData.db)
-
-Jupyter Notebook: For queries and interactive exploration
-
-📈 Next Steps
-
-Perform statistical analysis (e.g., how discount percentage affects sentiment).
-
-Build visualizations (top-rated products, discount vs. rating trends).
-
-Extend into a chatbot that can answer queries like:
-
-“Show me all negative reviews for Electronics products.”
+git clone https://github.com/AhmadAlali229/amazon-product-reviews-analysis.git
+cd amazon-product-reviews-analysis
 
 
-## Author & Acknowledgments
-Author: Ahmad Alali
+Create environment and install dependencies:
+
+conda create -n amazon_ai python=3.10 -y
+conda activate amazon_ai
+pip install -r requirements.txt
 
 
-### License   
-This project is licensed under the MIT License.
+Set your Groq API key inside .env:
+
+GROQ_API_KEY=your_key_here
+
+▶️ Usage
+
+Run the Streamlit app:
+
+cd src
+streamlit run ChatBot.py
+
+🛠️ Tech Stack
+
+Python (Pandas, SQLite, Streamlit, Plotly)
+
+Groq AI (Compound model for chatbot)
+
+SQL (Data queries, RAG integration)
+
+📷 Screenshots
+🔹 Dashboard & Chatbot – Average Rating per Category (Images/Pic2png)
+
+🔹 Chatbot Answer – Top 5 Products (Highest Discounted Price)(Images/Pic1.png)
+
+🔹 Database Columns Query(Images/Pic4.png)
+
+🔹 Highest Discounted Price(Images/Pic3.png)
+
+📜 License
+
+This project is licensed under the MIT License – see the LICENSE
+ file for details.
