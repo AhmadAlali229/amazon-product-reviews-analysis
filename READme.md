@@ -45,7 +45,7 @@ Enabled running SQL queries directly from Python or Jupyter Notebook.
 
 Sentiment Analysis applied on review_content using the Hugging Face multilingual sentiment model.
 
-Added two new columns to the dataset and DB:
+Added two new columns to the dataset and DB :
 
 sentiment_label → Positive / Neutral / Negative
 
