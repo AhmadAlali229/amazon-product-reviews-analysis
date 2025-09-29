@@ -25,10 +25,10 @@ def load_AmazonData():
 
 df = load_AmazonData()
 
-#Add logo (optional)
-##LOGO = Image.open('..\Images\Picture1.png')
-##left, mid, right = st.columns([1,3,1])
-##st.image(LOGO, width=180)
+#Add logo 
+LOGO = Image.open('..\Images\Picture1.png')
+left, mid, right = st.columns([1,3,1])
+st.image(LOGO, width=180)
 
 ## Page title
 st.set_page_config(page_title="Amazon Analytics", page_icon="📊", layout="wide")
