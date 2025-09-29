@@ -85,13 +85,13 @@ Groq AI (Compound model for chatbot)
 SQL (Data queries, RAG integration)
 
 📷 Screenshots
-🔹 Dashboard & Chatbot – Average Rating per Category ![Average Rating per Category](Images/Pic2png)
+🔹 Dashboard & Chatbot – Average Rating per Category ![Average Rating per Category](Images/pic2.png)
 
-🔹 Chatbot Answer – Top 5 Products (Highest Discounted Price)![Top 5 Products](Images/Pic1.png)
+🔹 Chatbot Answer – Top 5 Products (Highest Discounted Price)![Top 5 Products](Images/pic1.png)
 
-🔹 Database Columns Query![Database Columns Query](Images/Pic4.png)
+🔹 Database Columns Query![Database Columns Query](Images/pic4.png)
 
-🔹 Highest Discounted Price![Highest Discounted Price](Images/Pic3.png)
+🔹 Highest Discounted Price![Highest Discounted Price](Images/pic3.png)
 
 📜 License
 
